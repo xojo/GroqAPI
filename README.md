@@ -16,8 +16,27 @@ To use the `GroqAPI` class in your Xojo project:
 1. Download or clone this repository.
 2. Open your Xojo project.
 3. Drag the `GroqAPI` class file into your Xojo project navigator.
+4. Get an API key from Groq.com at [https://console.groq.com/keys](https://console.groq.com/keys)
 
 ## Usage
+
+### Drag and Drop the GroqAPI Class
+
+1. **Open your Xojo Project**: Launch Xojo and open your existing project or create a new one.
+2. **Import the GroqAPI Class**: Drag the `GroqAPI` class file from your file explorer into the Xojo project navigator on the left side of the Xojo IDE.
+3. **Add to a Window**: Drag the `GroqAPI` class from the project navigator onto a window in your project. This creates an instance of `GroqAPI` in that window.
+
+### Set Properties in the Xojo Inspector panel
+
+1. **Select the GroqAPI Instance**: Click on the `GroqAPI` instance in your window to select it.
+2. **Open the Inspector Panel**: If the Inspector panel is not already open, you can open it by selecting `View -> Inspector` from the menu.
+3. **Set Properties**: In the Inspector panel, you can set the following properties for the `GroqAPI` instance:
+   - **ApiKey**: Enter your API key obtained from Groq.com.
+   - **Model**: Specify the AI model to use (e.g., `llama-3.1-70b-versatile`).
+   - **Temperature**: Set the temperature value to control response randomness.
+   - **MaxTokens**: Define the maximum number of tokens for the response.
+   - **TopP**: Adjust this to control response diversity.
+   - **Memory**: Enable or disable memory to retain previous messages.
 
 ### Example Code
 
@@ -61,7 +80,6 @@ End Sub
 - MaxTokens: Integer - Maximum number of tokens to generate in the response.
 - TopP: Double - Controls diversity of the response.
 - Memory: Boolean - Determines if previous messages should be retained.
-- Stop: Variant - Conditions to stop response generation.
 
 ## Event Hooks
 - ResponseReceived: Triggered when a successful API response is received.
