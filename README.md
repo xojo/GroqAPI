@@ -68,7 +68,7 @@ End Sub
 - ErrorReceived: Triggered when an error occurs during an API request.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue to discuss potential changes.
