@@ -26,7 +26,7 @@ Begin DesktopWindow wndConversation
    Width           =   388
    Begin GroqAPI Groq
       AllowCertificateValidation=   False
-      ApiKey          =   ""
+      ApiKey          =   "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"
       HTTPStatusCode  =   0
       Index           =   -2147483648
       LockedInPosition=   False
@@ -35,7 +35,7 @@ Begin DesktopWindow wndConversation
       Memory          =   True
       Model           =   "llama-3.1-8b-instant"
       Scope           =   0
-      TabPanelIndex   =   "0"
+      TabPanelIndex   =   0
       Temperature     =   1.0
       TopP            =   1.0
    End
@@ -113,7 +113,7 @@ Begin DesktopWindow wndConversation
       Begin DesktopTextField UserMessageTextField
          AllowAutoDeactivate=   True
          AllowFocusRing  =   False
-         AllowSpellChecking=   False
+         AllowSpellChecking=   True
          AllowTabs       =   False
          BackgroundColor =   &cFFFFFF
          Bold            =   False
@@ -124,7 +124,7 @@ Begin DesktopWindow wndConversation
          Format          =   ""
          HasBorder       =   True
          Height          =   30
-         Hint            =   ""
+         Hint            =   "Your message goes here"
          Index           =   -2147483648
          InitialParent   =   "ContentWrapper"
          Italic          =   False
@@ -250,7 +250,11 @@ End
 		      ResponsesTextArea.AddText(role.Uppercase + ":" + EndOfLine)
 		      ResponsesTextArea.SelectionTextColor= Color.RGB(0, 0, 0)
 		      ResponsesTextArea.SelectionBold = False
-		      ResponsesTextArea.AddText(content + EndOfLine)
+		      ResponsesTextArea.AddText(content + EndOfLine + EndOfLine)
+		      If role = "assistant" Then
+		        // Add another EndOfLine to better separate messages
+		        ResponsesTextArea.AddText(EndOfLine)
+		      End If
 		    Next
 		    
 		    // Prepare the front end of the app
