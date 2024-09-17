@@ -26,7 +26,7 @@ Begin DesktopWindow wndConversation
    Width           =   388
    Begin GroqAPI Groq
       AllowCertificateValidation=   False
-      ApiKey          =   "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"
+      ApiKey          =   ""
       HTTPStatusCode  =   0
       Index           =   -2147483648
       LockedInPosition=   False
