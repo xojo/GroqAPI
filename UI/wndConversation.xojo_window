@@ -10,7 +10,7 @@ Begin DesktopWindow wndConversation
    HasFullScreenButton=   False
    HasMaximizeButton=   False
    HasMinimizeButton=   True
-   Height          =   260
+   Height          =   460
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -23,7 +23,7 @@ Begin DesktopWindow wndConversation
    Title           =   "Groq API"
    Type            =   0
    Visible         =   True
-   Width           =   388
+   Width           =   600
    Begin GroqAPI Groq
       AllowCertificateValidation=   False
       ApiKey          =   ""
@@ -35,6 +35,7 @@ Begin DesktopWindow wndConversation
       Memory          =   True
       Model           =   "llama-3.1-8b-instant"
       Scope           =   0
+      SystemMessage   =   "you are a helpful AI assistant."
       TabPanelIndex   =   0
       Temperature     =   1.0
       TopP            =   1.0
@@ -46,7 +47,7 @@ Begin DesktopWindow wndConversation
       CornerSize      =   16.0
       Enabled         =   True
       FillColor       =   &cFFFFFF
-      Height          =   239
+      Height          =   439
       Index           =   -2147483648
       Left            =   10
       LockBottom      =   True
@@ -61,7 +62,7 @@ Begin DesktopWindow wndConversation
       Top             =   11
       Transparent     =   False
       Visible         =   True
-      Width           =   370
+      Width           =   582
       Begin DesktopTextArea ResponsesTextArea
          AllowAutoDeactivate=   True
          AllowFocusRing  =   False
@@ -78,7 +79,7 @@ Begin DesktopWindow wndConversation
          HasBorder       =   False
          HasHorizontalScrollbar=   False
          HasVerticalScrollbar=   True
-         Height          =   152
+         Height          =   352
          HideSelection   =   True
          Index           =   -2147483648
          InitialParent   =   "ContentWrapper"
@@ -108,7 +109,7 @@ Begin DesktopWindow wndConversation
          UnicodeMode     =   1
          ValidationMask  =   ""
          Visible         =   True
-         Width           =   330
+         Width           =   542
       End
       Begin DesktopTextField UserMessageTextField
          AllowAutoDeactivate=   True
@@ -145,12 +146,12 @@ Begin DesktopWindow wndConversation
          TextAlignment   =   0
          TextColor       =   &c000000
          Tooltip         =   ""
-         Top             =   209
+         Top             =   409
          Transparent     =   False
          Underline       =   False
          ValidationMask  =   ""
          Visible         =   True
-         Width           =   272
+         Width           =   484
       End
       Begin DesktopButton SendButton
          AllowAutoDeactivate=   True
@@ -166,7 +167,7 @@ Begin DesktopWindow wndConversation
          Index           =   -2147483648
          InitialParent   =   "ContentWrapper"
          Italic          =   False
-         Left            =   305
+         Left            =   517
          LockBottom      =   True
          LockedInPosition=   False
          LockLeft        =   False
@@ -178,7 +179,7 @@ Begin DesktopWindow wndConversation
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   209
+         Top             =   409
          Transparent     =   False
          Underline       =   False
          Visible         =   True
@@ -212,7 +213,7 @@ Begin DesktopWindow wndConversation
          Transparent     =   False
          Underline       =   False
          Visible         =   True
-         Width           =   370
+         Width           =   582
       End
    End
 End
@@ -283,8 +284,14 @@ End
 		  Var error As JSONItem = json.Child("error")
 		  Var message As String = error.Value("message")
 		  
-		  
-		  MessageBox("Error code: " + HTTPStatus.ToString + EndOfLine + message)
+		  If HTTPStatus = 401 And message = "Invalid API Key" Then
+		    Var w As New wndInfo
+		    w.Show(self)
+		  Else
+		    MessageBox("Location: " + CurrentMethodName + EndOfLine +_
+		    "Error code: " + HTTPStatus.ToString + EndOfLine +_
+		    "Message: " + message)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents

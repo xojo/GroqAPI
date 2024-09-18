@@ -9,6 +9,7 @@ DesktopWindow=wndConversation;UI/wndConversation.xojo_window;&h0000000015DA9FFF;
 BuildSteps=Build Automation;Build Automation.xojo_code;&h0000000046BEFFFF;&h0000000000000000;false
 Folder=Groq;Groq;&h0000000051FBBFFF;&h0000000000000000;false
 Class=GroqAPI;Groq/GroqAPI.xojo_code;&h00000000756DA7FF;&h0000000051FBBFFF;false
+DesktopWindow=wndInfo;UI/wndInfo.xojo_window;&h000000006620E7FF;&h0000000031BB07FF;false
 DefaultWindow=wndConversation
 AppMenuBar=MainMenuBar
 MajorVersion=1

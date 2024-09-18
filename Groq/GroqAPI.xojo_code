@@ -91,6 +91,16 @@ Inherits URLConnection
 		    pMessages.RemoveAll
 		  End If
 		  
+		  // Check if SystemMessage is set and add it as a "system" message if not already added.
+		  If SystemMessage.Trim <> "" Then
+		    If pMessages.Count = 0 Or Not pMessages.ChildAt(0).Value("role") = "system" Then
+		      Var sm As New JSONItem
+		      sm.Value("role") = "system"
+		      sm.Value("content") = SystemMessage
+		      pMessages.AddAt(0, sm) // Insert at the beginning of the array
+		    End If
+		  End If
+		  
 		  // Create a new JSONItem to represent a message.
 		  // Each message consists of a role and corresponding content.
 		  Var message As New JSONItem
@@ -159,62 +169,42 @@ Inherits URLConnection
 
 	#tag Method, Flags = &h0
 		Sub GetAvailableModels()
-		  // Check if the API key is provided before making the request.
-		  // The API key is required for authenticating the request with the Groq API.
-		  If ApiKey.IsEmpty = False Then
-		    // Define the URL endpoint for retrieving available models.
-		    Var url As String = "https://api.groq.com/openai/v1/models"
-		    
-		    // Set the necessary headers for the HTTP request.
-		    // 'Content-Type' specifies that the request expects JSON data.
-		    Self.RequestHeader("Content-Type") = "application/json"
-		    // 'Authorization' uses the Bearer token method to authenticate with the API.
-		    Self.RequestHeader("Authorization") = "Bearer " + ApiKey
-		    
-		    // Send the GET request to the API endpoint.
-		    // This request retrieves a list of available models from the API.
-		    Self.Send("GET", url)
-		  Else
-		    // Raise an exception if no API key is provided.
-		    // This prevents unauthorized requests from being sent.
-		    Var e As New NilObjectException
-		    e.Message = "No API key was provided."
-		    Raise e
-		  End If
+		  // Define the URL endpoint for retrieving available models.
+		  Var url As String = "https://api.groq.com/openai/v1/models"
+		  
+		  // Set the necessary headers for the HTTP request.
+		  // 'Content-Type' specifies that the request expects JSON data.
+		  Self.RequestHeader("Content-Type") = "application/json"
+		  // 'Authorization' uses the Bearer token method to authenticate with the API.
+		  Self.RequestHeader("Authorization") = "Bearer " + ApiKey
+		  
+		  // Send the GET request to the API endpoint.
+		  // This request retrieves a list of available models from the API.
+		  Self.Send("GET", url)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SendChatCompletionRequest()
-		  // Check if the API key is provided before proceeding.
-		  // The API key is essential for authenticating the request with the server.
-		  If ApiKey.IsEmpty = False Then
-		    // Define the URL endpoint for the chat completion request.
-		    Var url As String = "https://api.groq.com/openai/v1/chat/completions"
-		    
-		    // Construct the request body using the ConstructRequestBody method.
-		    // This includes the messages and other parameters needed by the API.
-		    Var requestBody As String = ConstructRequestBody()
-		    
-		    // Set the necessary headers for the HTTP request.
-		    // 'Content-Type' specifies that the request body is in JSON format.
-		    Self.RequestHeader("Content-Type") = "application/json"
-		    // 'Authorization' uses the Bearer token method to authenticate with the API.
-		    Self.RequestHeader("Authorization") = "Bearer " + ApiKey
-		    
-		    // Attach the constructed JSON request body to the request.
-		    Self.SetRequestContent(requestBody, "application/json")
-		    
-		    // Send the POST request to the API endpoint.
-		    // This triggers the API to process the chat completion request.
-		    Self.Send("POST", url)
-		  Else
-		    // Raise an exception if no API key is provided.
-		    // This prevents the request from being sent without proper authentication.
-		    Var e As New NilObjectException
-		    e.Message = "No API key was provided."
-		    Raise e
-		  End If
+		  // Define the URL endpoint for the chat completion request.
+		  Var url As String = "https://api.groq.com/openai/v1/chat/completions"
+		  
+		  // Construct the request body using the ConstructRequestBody method.
+		  // This includes the messages and other parameters needed by the API.
+		  Var requestBody As String = ConstructRequestBody()
+		  
+		  // Set the necessary headers for the HTTP request.
+		  // 'Content-Type' specifies that the request body is in JSON format.
+		  Self.RequestHeader("Content-Type") = "application/json"
+		  // 'Authorization' uses the Bearer token method to authenticate with the API.
+		  Self.RequestHeader("Authorization") = "Bearer " + ApiKey
+		  
+		  // Attach the constructed JSON request body to the request.
+		  Self.SetRequestContent(requestBody, "application/json")
+		  
+		  // Send the POST request to the API endpoint.
+		  // This triggers the API to process the chat completion request.
+		  Self.Send("POST", url)
 		End Sub
 	#tag EndMethod
 
@@ -265,6 +255,7 @@ Inherits URLConnection
 		3. **Set Properties**: In the Inspector panel, you can set the following properties for the `GroqAPI` instance:
 		   - **ApiKey**: Enter your API key obtained from Groq.com at [https://console.groq.com/keys](https://console.groq.com/keys)
 		   - **Model**: Specify the AI model to use (e.g., `llama-3.1-70b-versatile`).
+		   - **SystemMessage**: Set the system message prompt.
 		   - **Temperature**: Set the temperature value to control response randomness.
 		   - **MaxTokens**: Define the maximum number of tokens for the response.
 		   - **TopP**: Adjust this to control response diversity.
@@ -355,6 +346,10 @@ Inherits URLConnection
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		SystemMessage As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Temperature As Double = 1.0
 	#tag EndProperty
 
@@ -421,6 +416,14 @@ Inherits URLConnection
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="SystemMessage"
+			Visible=true
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Memory"
 			Visible=true
 			Group="Behavior"
@@ -453,6 +456,14 @@ Inherits URLConnection
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="max_context_tokens"
+			Visible=false
+			Group="Behavior"
+			InitialValue="8192"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="AllowCertificateValidation"
 			Visible=false
 			Group="Behavior"
@@ -465,14 +476,6 @@ Inherits URLConnection
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="max_context_tokens"
-			Visible=false
-			Group="Behavior"
-			InitialValue="8192"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
